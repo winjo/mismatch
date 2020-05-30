@@ -1,0 +1,23 @@
+{{ block "header.html" .Title }}{{ end }}
+
+{{ block "navmenu.html" .Session.Username }}{{ end }}
+
+<h4>Latest members:</h4>
+<table>
+  {{ range $index, $item := .Data }}
+    <tr>
+      {{ if .Picture }}
+        <td><img src="/images/{{ $item.Picture }}" alt="{{ $item.FirstName }}"></td>
+      {{ else }}
+        <td><img src="/images/nopic.jpg" alt="{{ $item.FirstName }}"></td>
+      {{ end }}
+      {{ if $.Session.Userid }}
+        <td><a href="/viewprofile?user_id={{ $item.UserID }}">{{ $item.FirstName }}</a></td>
+      {{ else }}
+        <td>{{ $item.FirstName }}</td>
+      {{ end }}
+    </tr>
+  {{ end }}
+</table>
+
+{{ block "footer.html" . }}{{ end }}
