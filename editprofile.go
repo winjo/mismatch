@@ -72,7 +72,7 @@ func editprofile(w http.ResponseWriter, r *http.Request) {
 						p.ErrorMsg = "Sorry, there was a problem uploading your picture."
 					}
 				} else {
-					p.ErrorMsg = "Your picture must be a GIF, JPEG, or PNG image file no greater than 32 KB and 200x200 pixels in size."
+					p.ErrorMsg = "Your picture must be a GIF, JPEG, or PNG image file no greater than 32 KB and 120x120 pixels in size."
 				}
 			}
 			if p.ErrorMsg == "" {
