@@ -1,0 +1,29 @@
+{{ block "header.html" .Title }}{{ end }}
+
+{{ if not .Session.Userid }}
+  <p class="login">Please <a href="/login">log in</a> to access this page.</p>
+{{ else }}
+  {{ block "navmenu.html" .Session.Username }}{{ end }}
+  {{ if .SuccessSubmit }}
+    <p>Your responses have been saved.</p>
+  {{ end }}
+  <form method="post" action="/questionnaire">
+    <p>How do you feel about each topic?</p>
+    {{ $CategoryName := (index .Response 0).CategoryName }}
+    <fieldset>
+      <legend>{{ $CategoryName }}</legend>
+      {{ range .Response }}
+        {{ if ne $CategoryName .CategoryName }}
+          {{ $CategoryName = .CategoryName }}
+          </fieldset><fieldset><legend>{{ .CategoryName }}</legend>
+        {{ end }}
+        <label {{ if not .Response }}class="error"{{end}} for="{{ .ResponseID }}">{{ .TopicName }}</label>
+        <input type="radio" id="{{ .ResponseID }}" name="{{ .ResponseID }}" value="1" {{ if eq .Response 1 }}checked="checked"{{end}}>Love
+        <input type="radio" id="{{ .ResponseID }}" name="{{ .ResponseID }}" value="2" {{ if eq .Response 2 }}checked="checked"{{end}}>Hate<br />
+      {{ end }}
+    </fieldset>
+    <input type="submit" value="Save Questionnaire" name="submit" />
+  </form>
+{{ end }}
+
+{{ block "footer.html" . }}{{ end }}

@@ -14,7 +14,7 @@ const sessionID = "SESSION_ID"
 const key = "go-go-go-fun-fun"
 
 type session struct {
-	Userid   int64
+	Userid   int
 	Username string
 }
 

@@ -1,0 +1,53 @@
+{{ block "header.html" .Title }}{{ end }}
+
+{{ if not .Session.Userid }}
+  <p class="login">Please <a href="/login">log in</a> to access this page.</p>
+{{ else }}
+  {{ block "navmenu.html" .Session.Username }}{{ end }}
+  {{ if not .NotFound }}
+    {{ with .Userinfo }}
+      <table>
+        {{ if .UserName }}
+          <tr><td class="label">Username:</td><td>{{ .UserName }}</td></tr>
+        {{ end }}
+        {{ if .FirstName }}
+          <tr><td class="label">Username:</td><td>{{ .FirstName }}</td></tr>
+        {{ end }}
+        {{ if .LastName }}
+          <tr><td class="label">Username:</td><td>{{ .LastName }}</td></tr>
+        {{ end }}
+        {{ if .Gender }}
+          <tr>
+            <td class="label">Gender:</td>
+            <td>
+              {{ if eq .Gender "M" }}Male{{ else if eq .Gender "F"}}Female{{ else }}?{{end}}
+            </td>
+          </tr>
+        {{ end }}
+        {{ if .Birthdate }}
+          {{ if or (not $.QueryUserid) (eq $.Session.Userid $.QueryUserid) }}
+            <tr><td class="label">Birthdate:</td><td>{{ .Birthdate }}</td></tr>
+          {{ else }}
+            <tr><td class="label">Year born:</td><td>{{ .Birthyear }}</td></tr>
+          {{ end }}
+        {{ end }}
+        {{ if or .City .State }}
+          <tr><td class="label">Location:</td><td>{{ .City }}, {{ .State }}</td></tr>
+        {{ end }}
+        {{ if .Picture }}
+          <tr>
+            <td class="label">Picture:</td>
+            <td><img src="/images/{{ .Picture }}" alt="Profile Picture" /></td>
+          </tr>
+        {{ end }}
+        {{ if or (not $.QueryUserid) (eq $.Session.Userid $.QueryUserid) }}
+          <p>Would you like to <a href="/editprofile">edit your profile</a>?</p>
+        {{ end }}
+      </table>
+    {{ end }}
+  {{ else }}
+    <p class="error">There was a problem accessing your profile.</p>
+  {{ end }}
+{{ end }}
+
+{{ block "footer.html" . }}{{ end }}

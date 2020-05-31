@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
 )
@@ -24,19 +25,17 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		password2 := r.Form.Get("password2")
 		if username != "" && password1 != "" && password2 != "" && password1 == password2 {
 			db := getDB()
-			defer func() {
-				db.Close()
-			}()
-			stmt, err := db.Prepare("SELECT * FROM mismatch_user WHERE username = ?")
-			panicky(err)
-			rows, err := stmt.Query(username)
+			defer db.Close()
+			rows, err := db.Query("SELECT * FROM mismatch_user WHERE username = ?", username)
 			panicky(err)
 			if ok := rows.Next(); ok {
 				p.ErrorMsg = "An account already exists for this username. Please use a different address."
 			} else {
-				stmt, err := db.Prepare("INSERT INTO mismatch_user (username, password, join_date) VALUES (?, ?, ?)")
+				_, err := db.Exec(
+					"INSERT INTO mismatch_user (username, password, join_date) VALUES (?, ?, ?)",
+					username, sha(password1), time.Now().Format("2006-01-02 15:04:05"),
+				)
 				panicky(err)
-				stmt.Exec(username, sha(password1), time.Now().Format("2006-01-02 15:04:05"))
 				p.SuccessCreated = true
 			}
 		} else {
@@ -45,5 +44,8 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	tmpl.ExecuteTemplate(w, "signup.html", p)
+	err := tmpl.ExecuteTemplate(w, "signup.html", p)
+	if err != nil {
+		log.Println(err)
+	}
 }

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"log"
 	"net/http"
 )
 
@@ -22,22 +24,28 @@ func login(w http.ResponseWriter, r *http.Request) {
 		p.Username = username
 		if username != "" && password != "" {
 			db := getDB()
-			rows, err := db.Query("SELECT user_id, username FROM mismatch_user WHERE username = ? AND password = ?", username, sha(password))
-			panicky(err)
-			if ok := rows.Next(); ok {
-				var userid int64
-				var username string
-				err := rows.Scan(&userid, &username)
+			defer db.Close()
+			var userID int
+			var userName string
+			err := db.
+				QueryRow("SELECT user_id, username FROM mismatch_user WHERE username = ? AND password = ?", username, sha(password)).
+				Scan(&userID, &userName)
+			switch {
+			case err == sql.ErrNoRows:
+				p.ErrorMsg = "Sorry, you must enter a valid username and password to log in."
+			case err != nil:
 				panicky(err)
-				setSession(w, session{userid, username})
+			default:
+				setSession(w, session{userID, userName})
 				w.Header().Set("Location", "/")
 				w.WriteHeader(http.StatusFound)
-			} else {
-				p.ErrorMsg = "Sorry, you must enter a valid username and password to log in."
 			}
 		} else {
 			p.ErrorMsg = "Sorry, you must enter your username and password to log in."
 		}
 	}
-	tmpl.ExecuteTemplate(w, "login.html", p)
+	err := tmpl.ExecuteTemplate(w, "login.html", p)
+	if err != nil {
+		log.Println(err)
+	}
 }

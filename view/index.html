@@ -6,7 +6,7 @@
 <table>
   {{ range $index, $item := .Data }}
     <tr>
-      {{ if .Picture }}
+      {{ if $item.Picture }}
         <td><img src="/images/{{ $item.Picture }}" alt="{{ $item.FirstName }}"></td>
       {{ else }}
         <td><img src="/images/nopic.jpg" alt="{{ $item.FirstName }}"></td>

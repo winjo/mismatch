@@ -23,6 +23,9 @@ func main() {
 	http.HandleFunc("/images/", recovery(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	}))
+	http.HandleFunc("/style.css", recovery(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "view/style.css")
+	}))
 	http.HandleFunc("/", recovery(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			index(w, r)
@@ -33,9 +36,9 @@ func main() {
 	http.HandleFunc("/login", recovery(login))
 	http.HandleFunc("/logout", recovery(logout))
 	http.HandleFunc("/signup", recovery(signup))
-	http.HandleFunc("/style.css", recovery(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "view/style.css")
-	}))
+	http.HandleFunc("/viewprofile", recovery(viewprofile))
+	http.HandleFunc("/editprofile", recovery(editprofile))
+	http.HandleFunc("/questionnaire", recovery(questionnaire))
 
 	err := http.ListenAndServe(":9000", nil)
 	if err != nil {

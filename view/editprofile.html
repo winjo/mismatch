@@ -1,0 +1,45 @@
+{{ block "header.html" .Title }}{{ end }}
+
+{{ if not .Session.Userid }}
+  <p class="login">Please <a href="/login">log in</a> to access this page.</p>
+{{ else }}
+  {{ block "navmenu.html" .Session.Username }}{{ end }}
+  {{ if .ErrorMsg }}
+    <p class="error">{{ .ErrorMsg }}</p>
+  {{ end }}
+  {{ if .SuccessSubmit }}
+    <p>Your profile has been successfully updated. Would you like to <a href="/viewprofile">view your profile</a>?</p>
+  {{ else }}
+    {{ with .Userinfo }}
+      <form enctype="multipart/form-data" method="post" action="/editprofile">
+        <fieldset>
+          <legend>Personal Information</legend>
+          <label for="firstname">First name:</label>
+          <input type="text" id="firstname" name="firstname" value="{{ .FirstName }}" /><br />
+          <label for="lastname">Last name:</label>
+          <input type="text" id="lastname" name="lastname" value="{{ .LastName }}" /><br />
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="M" {{ if eq .Gender "M" }}selected="selected"{{ end }}>Male</option>
+            <option value="F" {{ if eq .Gender "F" }}selected="selected"{{ end }}>Female</option>
+          </select><br />
+          <label for="birthdate">Birthdate:</label>
+          <input type="text" id="birthdate" name="birthdate" value="{{ .Birthdate }}" placeholder="YYYY-MM-DD" /><br />
+          <label for="city">City:</label>
+          <input type="text" id="city" name="city" value="{{ .City }}" /><br />
+          <label for="state">State:</label>
+          <input type="text" id="state" name="state" value="{{ .State }}" /><br />
+          <input type="hidden" name="old_picture" value="{{ .OldPicture }}" />
+          <label for="new_picture">Picture:</label>
+          <input type="file" id="new_picture" name="new_picture" accept="image/gif, image/jpeg, image/pjpeg, image/png" />
+          {{ if .OldPicture }}
+            <img class="profile" src="images/{{ .OldPicture }}" alt="Profile Picture" />
+          {{ end }}
+        </fieldset>
+        <input type="submit" value="Save Profile" name="submit" />
+      </form>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ block "footer.html" . }}{{ end }}

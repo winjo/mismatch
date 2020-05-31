@@ -1,12 +1,13 @@
 package main
 
 import (
+	"log"
 	"net/http"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
 	type dataItem struct {
-		UserID    int64
+		UserID    int
 		FirstName string
 		Picture   string
 	}
@@ -22,6 +23,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path == "/" {
 		db := getDB()
+		defer db.Close()
 		rows, err := db.Query("SELECT user_id, first_name, picture FROM mismatch_user WHERE first_name IS NOT NULL ORDER BY join_date DESC LIMIT 5")
 		panicky(err)
 		for rows.Next() {
@@ -29,6 +31,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 			rows.Scan(&item.UserID, &item.FirstName, &item.Picture)
 			p.Data = append(p.Data, item)
 		}
-		tmpl.ExecuteTemplate(w, "index.html", p)
+		err = tmpl.ExecuteTemplate(w, "index.html", p)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }

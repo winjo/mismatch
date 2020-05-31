@@ -2,7 +2,7 @@
 
 内容参考《Head First PHP & MYSQL》中的示例
 
-除 MYSQL 驱动外，其余完全由 Go 内置的 package 编写，体现 Go 本身的强大和简介
+除 MYSQL 驱动外，其余完全由 Go 内置的 package 编写，体现 Go 本身的强大和简洁
 
 包含内容
 - 登录
