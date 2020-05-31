@@ -10,3 +10,27 @@
 - 图片上传
 - template
 - 路由配置
+- 数据库联表查询
+
+使用的包
+- log
+- time
+- bytes
+- net/http
+- database/sql
+- html/template
+- crypto/aes
+- crypto/cipher
+- crypto/sha1
+- encoding/base64
+- encoding/json
+- encoding/hex
+- image
+- image/gif
+- image/jpeg
+- image/png
+- io
+- io/ioutil
+- os
+- strings
+- strconv
