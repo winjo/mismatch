@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
 	"image"
 	_ "image/gif"
 	_ "image/jpeg"
@@ -98,16 +99,31 @@ func editprofile(w http.ResponseWriter, r *http.Request) {
 		} else {
 			rows, err := db.Query("SELECT first_name, last_name, gender, birthdate, city, state, picture FROM mismatch_user WHERE user_id = ?", s.Userid)
 			panicky(err)
-			if ok := rows.Next(); ok {
-				rows.Scan(
-					&p.Userinfo.FirstName,
-					&p.Userinfo.LastName,
-					&p.Userinfo.Gender,
-					&p.Userinfo.Birthdate,
-					&p.Userinfo.City,
-					&p.Userinfo.State,
-					&p.Userinfo.OldPicture,
+			if rows.Next() {
+				firstName := sql.NullString{}
+				lastName := sql.NullString{}
+				gender := sql.NullString{}
+				birthdate := sql.NullString{}
+				city := sql.NullString{}
+				state := sql.NullString{}
+				oldPicture := sql.NullString{}
+				err := rows.Scan(
+					&firstName,
+					&lastName,
+					&gender,
+					&birthdate,
+					&city,
+					&state,
+					&oldPicture,
 				)
+				panicky(err)
+				p.Userinfo.FirstName = firstName.String
+				p.Userinfo.LastName = lastName.String
+				p.Userinfo.Gender = gender.String
+				p.Userinfo.Birthdate = birthdate.String
+				p.Userinfo.City = city.String
+				p.Userinfo.State = state.String
+				p.Userinfo.OldPicture = oldPicture.String
 			} else {
 				p.NotFound = true
 			}

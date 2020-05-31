@@ -1,0 +1,36 @@
+{{ block "header.html" .Title }}{{ end }}
+
+{{ if not .Session.Userid }}
+  <p class="login">Please <a href="login">log in</a> to access this page.</p>
+{{ else }}
+  {{ block "navmenu.html" .Session.Username }}{{ end }}
+  {{ if .ShouldQuestion }}
+    <p>You must first <a href="questionnaire">answer the questionnaire</a> before you can be mismatched.</p>
+  {{ else if ne .MismatchUserID -1 }}
+    {{ with .Userinfo }}
+    <table>
+      <tr>
+        <td class="label">
+          {{ if and .FirstName .LastName }}
+            {{ .FirstName }} {{ .LastName }}<br />
+          {{ end }}
+          {{ if and .City .State }}
+            {{ .City }} {{ .State }}<br />
+          {{ end }}
+        </td>
+        <td>
+          {{ if .Picture }}
+            <img src="images/{{ .Picture }}" alt="Profile Picture" /><br />
+          {{ end }}
+        </td>
+      </tr>
+    </table>
+    {{ end }}
+    {{ range .MismatchTopics }}
+      {{ . }}<br />
+    {{ end }}
+    <h4>View <a href="viewprofile?user_id={{ .MismatchUserID }}">{{ .Userinfo.FirstName }}'s profile</a>.</h4>
+  {{ end }}
+{{ end }}
+
+{{ block "footer.html" . }}{{ end }}

@@ -1,17 +1,17 @@
 {{ block "header.html" .Title }}{{ end }}
 
 {{ if not .Session.Userid }}
-  <p class="login">Please <a href="/login">log in</a> to access this page.</p>
+  <p class="login">Please <a href="login">log in</a> to access this page.</p>
 {{ else }}
   {{ block "navmenu.html" .Session.Username }}{{ end }}
   {{ if .ErrorMsg }}
     <p class="error">{{ .ErrorMsg }}</p>
   {{ end }}
   {{ if .SuccessSubmit }}
-    <p>Your profile has been successfully updated. Would you like to <a href="/viewprofile">view your profile</a>?</p>
+    <p>Your profile has been successfully updated. Would you like to <a href="viewprofile">view your profile</a>?</p>
   {{ else }}
     {{ with .Userinfo }}
-      <form enctype="multipart/form-data" method="post" action="/editprofile">
+      <form enctype="multipart/form-data" method="post" action="editprofile">
         <fieldset>
           <legend>Personal Information</legend>
           <label for="firstname">First name:</label>

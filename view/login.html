@@ -2,7 +2,7 @@
 
 {{ if not .Session.Userid }}
   {{ if .ErrorMsg }}<p class="error">{{ .ErrorMsg }}</p>{{end}}
-  <form method="post" action="/login">
+  <form method="post" action="login">
     <fieldset>
       <legend>Log In</legend>
       <label for="username">Username:</label>

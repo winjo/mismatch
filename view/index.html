@@ -7,12 +7,12 @@
   {{ range $index, $item := .Data }}
     <tr>
       {{ if $item.Picture }}
-        <td><img src="/images/{{ $item.Picture }}" alt="{{ $item.FirstName }}"></td>
+        <td><img src="images/{{ $item.Picture }}" alt="{{ $item.FirstName }}"></td>
       {{ else }}
-        <td><img src="/images/nopic.jpg" alt="{{ $item.FirstName }}"></td>
+        <td><img src="images/nopic.jpg" alt="{{ $item.FirstName }}"></td>
       {{ end }}
       {{ if $.Session.Userid }}
-        <td><a href="/viewprofile?user_id={{ $item.UserID }}">{{ $item.FirstName }}</a></td>
+        <td><a href="viewprofile?user_id={{ $item.UserID }}">{{ $item.FirstName }}</a></td>
       {{ else }}
         <td>{{ $item.FirstName }}</td>
       {{ end }}

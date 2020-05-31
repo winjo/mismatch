@@ -39,6 +39,7 @@ func main() {
 	http.HandleFunc("/viewprofile", recovery(viewprofile))
 	http.HandleFunc("/editprofile", recovery(editprofile))
 	http.HandleFunc("/questionnaire", recovery(questionnaire))
+	http.HandleFunc("/mymismatch", recovery(mymismatch))
 
 	err := http.ListenAndServe(":9000", nil)
 	if err != nil {

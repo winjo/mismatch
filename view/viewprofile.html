@@ -1,7 +1,7 @@
 {{ block "header.html" .Title }}{{ end }}
 
 {{ if not .Session.Userid }}
-  <p class="login">Please <a href="/login">log in</a> to access this page.</p>
+  <p class="login">Please <a href="login">log in</a> to access this page.</p>
 {{ else }}
   {{ block "navmenu.html" .Session.Username }}{{ end }}
   {{ if not .NotFound }}
@@ -37,11 +37,11 @@
         {{ if .Picture }}
           <tr>
             <td class="label">Picture:</td>
-            <td><img src="/images/{{ .Picture }}" alt="Profile Picture" /></td>
+            <td><img src="images/{{ .Picture }}" alt="Profile Picture" /></td>
           </tr>
         {{ end }}
         {{ if or (not $.QueryUserid) (eq $.Session.Userid $.QueryUserid) }}
-          <p>Would you like to <a href="/editprofile">edit your profile</a>?</p>
+          <p>Would you like to <a href="editprofile">edit your profile</a>?</p>
         {{ end }}
       </table>
     {{ end }}

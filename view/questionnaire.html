@@ -1,13 +1,13 @@
 {{ block "header.html" .Title }}{{ end }}
 
 {{ if not .Session.Userid }}
-  <p class="login">Please <a href="/login">log in</a> to access this page.</p>
+  <p class="login">Please <a href="login">log in</a> to access this page.</p>
 {{ else }}
   {{ block "navmenu.html" .Session.Username }}{{ end }}
   {{ if .SuccessSubmit }}
     <p>Your responses have been saved.</p>
   {{ end }}
-  <form method="post" action="/questionnaire">
+  <form method="post" action="questionnaire">
     <p>How do you feel about each topic?</p>
     {{ $CategoryName := (index .Response 0).CategoryName }}
     <fieldset>

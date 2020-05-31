@@ -44,17 +44,24 @@ func viewprofile(w http.ResponseWriter, r *http.Request) {
 		}
 		db := getDB()
 		defer db.Close()
+		firstName := sql.NullString{}
+		lastName := sql.NullString{}
+		gender := sql.NullString{}
+		birthdate := sql.NullString{}
+		city := sql.NullString{}
+		state := sql.NullString{}
+		picture := sql.NullString{}
 		err := db.
 			QueryRow("SELECT username, first_name, last_name, gender, birthdate, city, state, picture FROM mismatch_user WHERE user_id = ?", userID).
 			Scan(
 				&p.Userinfo.UserName,
-				&p.Userinfo.FirstName,
-				&p.Userinfo.LastName,
-				&p.Userinfo.Gender,
-				&p.Userinfo.Birthdate,
-				&p.Userinfo.City,
-				&p.Userinfo.State,
-				&p.Userinfo.Picture,
+				&firstName,
+				&lastName,
+				&gender,
+				&birthdate,
+				&city,
+				&state,
+				&picture,
 			)
 		switch {
 		case err == sql.ErrNoRows:
@@ -62,7 +69,16 @@ func viewprofile(w http.ResponseWriter, r *http.Request) {
 		case err != nil:
 			panicky(err)
 		default:
-			p.Userinfo.Birthyear = strings.Split(p.Userinfo.Birthdate, "-")[0]
+			p.Userinfo.FirstName = firstName.String
+			p.Userinfo.LastName = lastName.String
+			p.Userinfo.Gender = gender.String
+			p.Userinfo.Birthdate = birthdate.String
+			p.Userinfo.City = city.String
+			p.Userinfo.State = state.String
+			p.Userinfo.Picture = picture.String
+			if p.Userinfo.Birthdate != "" {
+				p.Userinfo.Birthyear = strings.Split(p.Userinfo.Birthdate, "-")[0]
+			}
 		}
 	}
 	err := tmpl.ExecuteTemplate(w, "viewprofile.html", p)
