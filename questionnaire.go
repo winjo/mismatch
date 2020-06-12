@@ -27,8 +27,6 @@ func questionnaire(w http.ResponseWriter, r *http.Request) {
 
 	s := getSession(r)
 	if s.Userid != 0 {
-		db := getDB()
-		defer db.Close()
 		rows, err := db.Query("SELECT * FROM mismatch_response WHERE user_id = ?", s.Userid)
 		if ok := rows.Next(); !ok {
 			rows, err := db.Query("SELECT topic_id FROM mismatch_topic ORDER BY category_id, topic_id")

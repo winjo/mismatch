@@ -41,6 +41,8 @@ func main() {
 	http.HandleFunc("/questionnaire", recovery(questionnaire))
 	http.HandleFunc("/mymismatch", recovery(mymismatch))
 
+	openDB()
+
 	err := http.ListenAndServe(":9000", nil)
 	if err != nil {
 		log.Fatal(nil)

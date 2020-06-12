@@ -38,8 +38,6 @@ func editprofile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if s.Userid != 0 {
-		db := getDB()
-		defer db.Close()
 		if r.Method == "POST" {
 			picFile, picHandler, err := r.FormFile("new_picture")
 			p.Userinfo.FirstName = strings.Trim(r.Form.Get("firstname"), " ")

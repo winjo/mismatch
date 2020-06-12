@@ -30,8 +30,6 @@ func mymismatch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if s.Userid != 0 {
-		db := getDB()
-		defer db.Close()
 		rows, err := db.Query("SELECT * FROM mismatch_response WHERE user_id = ?", s.Userid)
 		panicky(err)
 		if rows.Next() {

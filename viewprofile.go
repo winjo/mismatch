@@ -42,8 +42,6 @@ func viewprofile(w http.ResponseWriter, r *http.Request) {
 		} else {
 			userID = s.Userid
 		}
-		db := getDB()
-		defer db.Close()
 		firstName := sql.NullString{}
 		lastName := sql.NullString{}
 		gender := sql.NullString{}

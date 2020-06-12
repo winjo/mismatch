@@ -23,8 +23,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 		username, password := r.Form.Get("username"), r.Form.Get("password")
 		p.Username = username
 		if username != "" && password != "" {
-			db := getDB()
-			defer db.Close()
 			var userID int
 			var userName string
 			err := db.

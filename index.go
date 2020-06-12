@@ -22,8 +22,6 @@ func index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.URL.Path == "/" {
-		db := getDB()
-		defer db.Close()
 		rows, err := db.Query("SELECT user_id, first_name, picture FROM mismatch_user WHERE first_name IS NOT NULL ORDER BY join_date DESC LIMIT 5")
 		panicky(err)
 		for rows.Next() {

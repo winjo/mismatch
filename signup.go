@@ -24,8 +24,6 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		password1 := r.Form.Get("password1")
 		password2 := r.Form.Get("password2")
 		if username != "" && password1 != "" && password2 != "" && password1 == password2 {
-			db := getDB()
-			defer db.Close()
 			rows, err := db.Query("SELECT * FROM mismatch_user WHERE username = ?", username)
 			panicky(err)
 			if ok := rows.Next(); ok {
