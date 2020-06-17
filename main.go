@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -43,7 +44,12 @@ func main() {
 
 	openDB()
 
-	err := http.ListenAndServe(":9000", nil)
+	addr := os.Getenv("ADDR")
+	if addr == "" {
+		addr = ":9000"
+	}
+
+	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		log.Fatal(nil)
 	}
